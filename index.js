@@ -10,28 +10,21 @@ let usuario = require('./models/usuario');
 var cors = require('cors');
 var app = express();
 
+app.use(cors({
+  // 'allowedHeaders': ['Content-Type','Access-Control-Allow-Origin'],
+   origin: true,
+   methods: 'GET,POST,PUT,DELETE',
+  // 'preflightContinue': false,
+  // 'optionsSuccessStatus': 205,
+  credentials: true
+}));
+
 
 app.use(logger('dev')); //  formato_ Concise output colored by response status for development use.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(cors({
-  'allowedHeaders': ['sessionId', 'Content-Type','Access-Control-Allow-Origin'],
-  'origin': true,
-  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  'preflightContinue': false
-}));
-
-// app.use(cors({
-//   methods: "GET,PUT,POST,DELETE",
-//   credentials: true,
-//   optionsSuccessStatus: 200,
-//   origin: true,
-//   allowedHeaders: 'Content-Type,Access-Control-Allow-Origin'
-//   }));
-
 
 
 app.use(session({

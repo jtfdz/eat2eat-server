@@ -9,6 +9,10 @@ const config = {
     q2:  qformat.select + ' alias_usuario = $1',
     q3:  qformat.select + ' correo_usuario = $1',
     q4:  qformat.select + ' id_usuario = $1',
+    q5: 'SELECT * from e2e_establecimientos',
+    q6: 'SELECT * from e2e_establecimientos WHERE id_usuario_establecimiento = $1',
+    q7: 'INSERT INTO e2e_establecimientos (id_establecimiento,id_usuario_establecimiento,nombre_establecimiento,dirección_establecimiento,descripción_establecimiento,contacto_establecimiento) VALUES (DEFAULT, $1, $2, $3, $4, $5)',
+    q8: 'DELETE FROM e2e_establecimientos WHERE id_establecimiento= $1 AND id_usuario_establecimiento= $2',
 }
 
 

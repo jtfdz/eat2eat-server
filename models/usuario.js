@@ -49,35 +49,16 @@ module.exports.comparePassword = async (candidatePassword, hash) => {
     return bcrypt.compare(candidatePassword, hash);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports.notaCrear = async (data,id) => {
+module.exports.establecimientosMostrar = async () => {
     try{
-        const result = await db.none(config.q5 , [id, data.tipo, data.contenido, sessionHelper.getCurrentTime(), data.titulo])
-        return result
-    }catch(e){
-        throw e;
+        const result = await db.any(config.q5)
+        return result;
+    }catch(err){
+        throw err
     }
 }
 
-module.exports.notasMostrar = async (id) => {
+module.exports.establecimientosMostrarIndividual = async (id) => {
     try{
         const result = await db.any(config.q6, [id])
         return result;
@@ -86,27 +67,40 @@ module.exports.notasMostrar = async (id) => {
     }
 }
 
-module.exports.estadisticas = async (id) => {
+module.exports.establecimientoCrear = async (data,id) => {
     try{
-        const data = [];
-        data[0] = await db.any(config.q7, [id]);
-        data[1] = await db.any(config.q8, [id]); 
-        data[2] = await db.any(config.q9, [id]);        
-        return data;
-    }catch(err){
-        throw err
-    }
-}
-
-
-module.exports.notaBorrar = async (data, id) => {
-    try{
-        const result = await db.none(config.q10, [data, id])
+        const result = await db.none(config.q7 , [id, data.tipo, data.contenido, sessionHelper.getCurrentTime(), data.titulo])
         return result
     }catch(e){
         throw e;
     }
 }
+
+module.exports.establecimientoBorrar = async (data, id) => {
+    try{
+        const result = await db.none(config.q8, [data, id])
+        return result
+    }catch(e){
+        throw e;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports.notaMostrar = async (id) => {
     try{

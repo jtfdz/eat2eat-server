@@ -7,6 +7,7 @@ let user = require('../models/usuario');
 const { check, validationResult } = require('express-validator');
 
 
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -48,59 +49,69 @@ router.post('/registro',
 });
 
 
-router.post('/nota/crear', auth.isAuth, (req, res) => {
-    user.notaCrear(req.body, sessionHelper.getIdFromSession(req)).then((result) => {
-        res.json({status: 200, message: 'Nota creada :).'})
-    }).catch(err => {
-        console.log(err)
-        res.json({status: 500, message: 'Error al crear nota :(.'})
-    })
-})
-
-router.get('/estadisticas', auth.isAuth, (req, res) => {
-    user.estadisticas(sessionHelper.getIdFromSession(req)).then((data) => {
+router.get('/establecimientos', auth.isAuth, (req, res) => {
+    user.establecimientosMostrar().then((data) => {
         let message, status;
         if(data !== null){
-            message = "estadísticas desplegadas :).";
+            message = "establecimientos desplegados :).";
             status = 200;
         }else{
-            message = "estadísticas NO desplegadas :(.",
+            message = "establecimientos NO desplegados :(.",
             status = 404;
         }
         res.json({data, message, status});
     }).catch(err => {
         console.log(err)
-        res.json({status: 500, message: 'Error al enviar estadísticas.'})
+        res.json({status: 500, message: 'Error al cargar los establecimientos.'})  
     })
 })
 
-
-router.get('/notas', auth.isAuth, (req, res) => {
-    user.notasMostrar(sessionHelper.getIdFromSession(req)).then((data) => {
+router.get('/establecimientos-usuario', auth.isAuth, (req, res) => {
+    user.establecimientosMostrarIndividual(sessionHelper.getIdFromSession(req)).then((data) => {
         let message, status;
         if(data !== null){
-            message = "notas desplegadas :).";
+            message = "establecimientos desplegados :).";
             status = 200;
         }else{
-            message = "notas NO desplegadas :(.",
+            message = "establecimientos NO desplegados :(.",
             status = 404;
         }
         res.json({data, message, status});
     }).catch(err => {
         console.log(err)
-        res.json({status: 500, message: 'Error al cargar las notas.'})  
+        res.json({status: 500, message: 'Error al cargar los establecimientos.'})  
     })
 })
 
-
-router.delete('/notas/:id/borrar', auth.isAuth, (req, res) => {
-    user.notaBorrar(req.params.id, sessionHelper.getIdFromSession(req)).then((result) => {
-        res.json({status: 200, message: 'Nota borrada :).'})
+router.post('/establecimiento/crear', auth.isAuth, (req, res) => {
+    user.establecimientoCrear(req.body, sessionHelper.getIdFromSession(req)).then((result) => {
+        res.json({status: 200, message: 'establecimiento creado :).'})
     }).catch(err => {
         console.log(err)
-        res.json({status: 500, message: 'Error al borrar nota :(.'})
+        res.json({status: 500, message: 'Error al crear establecimiento :(.'})
     })
 })
+
+router.delete('/establecimiento/:id/borrar', auth.isAuth, (req, res) => {
+    user.establecimientoBorrar(req.params.id, sessionHelper.getIdFromSession(req)).then((result) => {
+        res.json({status: 200, message: 'establecimiento borrado :).'})
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error al borrar establecimiento :(.'})
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.get('/nota/:id', auth.isAuth, (req, res) => {
     user.notaMostrar(req.params.id).then((data) => {
