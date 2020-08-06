@@ -67,9 +67,10 @@ module.exports.establecimientosMostrarIndividual = async (id) => {
     }
 }
 
+
 module.exports.establecimientoCrear = async (data,id) => {
     try{
-        const result = await db.none(config.q7 , [id, data.tipo, data.contenido, sessionHelper.getCurrentTime(), data.titulo])
+        const result = await db.none(config.q7 , [id, data.nombre,data.direccion,data.descripcion,data.contacto,data.coloreo])
         return result
     }catch(e){
         throw e;
@@ -85,31 +86,31 @@ module.exports.establecimientoBorrar = async (data, id) => {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports.notaMostrar = async (id) => {
+module.exports.establecimientoMostrar = async (id) => {
     try{
-        const data = await db.any(config.q11, [id])
+        const data = await db.any(config.q9, [id])
         return data;
     }catch(err){
         throw err
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 module.exports.notaEditar = async (data, idn, idu) => {

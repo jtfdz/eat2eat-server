@@ -7,7 +7,6 @@ let user = require('../models/usuario');
 const { check, validationResult } = require('express-validator');
 
 
-
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -101,34 +100,34 @@ router.delete('/establecimiento/:id/borrar', auth.isAuth, (req, res) => {
     })
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-router.get('/nota/:id', auth.isAuth, (req, res) => {
-    user.notaMostrar(req.params.id).then((data) => {
+router.get('/establecimiento/:id', auth.isAuth, (req, res) => {
+    user.establecimientoMostrar(req.params.id).then((data) => {
         let message, status;
         if(data !== null){
-            message = "Nota desplegada :).";
+            message = "establecimiento desplegado :).";
             status = 200;
         }else{
-            message = "Nota inexistente :(.",
+            message = "establecimiento inexistente :(.",
             status = 404;
         }
         res.json({data, message, status});
     }).catch(err => {
         console.log(err)
-        res.json({status: 500, message: 'Error'})  
+        res.json({status: 500, message: 'error desplegando establecimiento :(.'})  
     })
 })
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 router.put('/nota/:id/editar', auth.isAuth, (req, res) => {
