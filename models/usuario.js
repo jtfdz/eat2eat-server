@@ -95,32 +95,33 @@ module.exports.establecimientoMostrar = async (id) => {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports.notaEditar = async (data, idn, idu) => {
+module.exports.establecimientoEditar = async (data, idn, idu) => {
     try {
-        const result = await db.none(config.q12, [data.titulo,data.contenido,idn, idu]);
+        const result = await db.none(config.q10, [data.nombre,data.direccion,data.descripcion,data.contacto, idn, idu]);
         return result
     }catch(e){
         throw e;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

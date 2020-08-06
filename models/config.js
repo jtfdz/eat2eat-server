@@ -15,6 +15,7 @@ const config = {
     q7: 'INSERT INTO e2e_establecimientos (id_establecimiento,id_usuario_establecimiento,nombre_establecimiento,direccion_establecimiento,descripcion_establecimiento,contacto_establecimiento,color_establecimiento,aceptado_establecimiento) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, false)',
     q8: 'DELETE FROM e2e_establecimientos WHERE id_establecimiento= $1 AND id_usuario_establecimiento= $2',
     q9:  qformat.select_p + ' id_establecimiento=$1',
+    q10: 'UPDATE e2e_establecimientos SET nombre_establecimiento=$1, direccion_establecimiento=$2, descripcion_establecimiento=$3, contacto_establecimiento=$4, aceptado_establecimiento=false WHERE id_establecimiento=$5 AND id_usuario_establecimiento=$6' 
 }
 
 

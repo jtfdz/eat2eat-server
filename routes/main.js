@@ -12,12 +12,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/login', auth.isLogged, passport.authenticate('local'), function(req, res){
-    res.json({mensaje: "Logged in con éxito.", status: 200})
+    res.json({mensaje: "logged in con éxito.", status: 200})
 });
 
 router.get('/logout', auth.isAuth, function(req, res){
     req.logout();
-    res.json({mensaje: "Logged out con éxito.", status: 200})
+    res.json({mensaje: "logged out con éxito.", status: 200})
 })
 
 router.post('/registro', 
@@ -35,15 +35,15 @@ router.post('/registro',
         let status, mensaje;
         if(count > 0){
             status = 200;
-            mensaje = "Usuario Registrado :).";
+            mensaje = "usuario registrado :).";
         }else{
           status = 500;
-          mensaje = 'Error al registrar Usuario :(.'
+          mensaje = 'error al registrar Usuario :(.'
           }
       res.json({status, mensaje})
       }).catch(err => {
         console.log(err);
-        res.status(500).json({status: 500, mensaje: 'Error al Registrar :(.'});
+        res.status(500).json({status: 500, mensaje: 'error al Registrar :(.'});
         }) 
 });
 
@@ -61,7 +61,7 @@ router.get('/establecimientos', auth.isAuth, (req, res) => {
         res.json({data, message, status});
     }).catch(err => {
         console.log(err)
-        res.json({status: 500, message: 'Error al cargar los establecimientos.'})  
+        res.json({status: 500, message: 'error al cargar los establecimientos :(.'})  
     })
 })
 
@@ -117,27 +117,16 @@ router.get('/establecimiento/:id', auth.isAuth, (req, res) => {
     })
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-router.put('/nota/:id/editar', auth.isAuth, (req, res) => {
-    user.notaEditar(req.body, req.params.id, sessionHelper.getIdFromSession(req)).then((result) => {
-        res.json({status: 200, message: 'Nota modificada :).'})
+router.put('/establecimiento/:id/editar', auth.isAuth, (req, res) => {
+    user.establecimientoEditar(req.body, req.params.id, sessionHelper.getIdFromSession(req)).then((result) => {
+        res.json({status: 200, message: 'establecimiento modificado :).'})
     }).catch(err => {
         console.log(err)
-        res.json({status: 500, message: 'Error al modificar nota :(.'})
+        res.json({status: 500, message: 'error al modificar establecimiento :(.'})
     })
 })
+
+
 
 
 
