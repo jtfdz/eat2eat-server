@@ -9,12 +9,23 @@ var mainRouter = require('./routes/main');
 let usuario = require('./models/usuario');
 var cors = require('cors');
 var app = express();
+const config = require('./models/config');
+
+var pgSession = require('connect-pg-simple')(session)
+var pool = require('./models/pool').getPool()
 
 app.use(cors({
   // 'allowedHeaders': ['Content-Type','Access-Control-Allow-Origin'],
    origin: true,
-   methods: 'GET,POST,PUT,DELETE',
-  // 'preflightContinue': false,
+//    origin: [
+//   'capacitor://localhost',
+//   'ionic://localhost',
+//   'http://localhost',
+//   'http://localhost:8080',
+//   'http://localhost:8100'
+// ],
+   methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  //preflightContinue: true,
   // 'optionsSuccessStatus': 205,
   credentials: true
 }));
@@ -26,16 +37,37 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+ app.enable('trust proxy'); 
 
 app.use(session({
-  secret: 'fajoq0i943wki09tgd',
-  saveUninitialized: true,
-  resave: true,
-  cookie: {
-    secure: true,
-    maxAge: 993600000
-  }
-}));
+store: new pgSession({ pool : pool, tableName: config.tabla_sesiones}),
+secret: 'fajoq0i9420enmoviles3wki09tgd', 
+name: 'random_session',
+resave: true,
+saveUninitialized: true,
+ proxy: true,
+cookie: { 
+  secure: false, 
+  sameSite: false,
+  // httpOnly: false,
+  maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
+ }, 
+}))
+
+
+
+
+
+// app.use(session({
+//   secret: 'fajoq0i943wki09tgd',
+//   saveUninitialized: true,
+//   resave: true,
+//   cookie: {
+//     secure: false,
+//     maxAge: 993600000
+//   }
+// }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,4 +86,3 @@ passport.deserializeUser(function(serializedUser,done){
 app.use('/', mainRouter);
 
 module.exports = app;
-
