@@ -6,7 +6,6 @@ let sessionHelper = require('../models/session');
 let user = require('../models/usuario');
 const { check, validationResult } = require('express-validator');
 
-
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -29,6 +28,7 @@ router.post('/registro',
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array()  })
       }
+
 
     user.registrarUsuario(req.body).then((result)=>{
         let count = result.rowCount;
@@ -126,7 +126,22 @@ router.put('/establecimiento/:id/editar', auth.isAuth, (req, res) => {
     })
 })
 
-
+router.get('/productos/:id', auth.isAuth, (req, res) => {
+    user.productosMostrar(req.params.id).then((data) => {
+        let message, status;
+        if(data !== null){
+            message = "productos desplegados :).";
+            status = 200;
+        }else{
+            message = "productos NO desplegados :(.",
+            status = 404;
+        }
+        res.json({data, message, status});
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error al cargar los productos :(.'})  
+    })
+})
 
 
 

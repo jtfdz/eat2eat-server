@@ -105,7 +105,14 @@ module.exports.establecimientoEditar = async (data, idn, idu) => {
 }
 
 
-
+module.exports.productosMostrar = async (id) => {
+    try{
+        const result = await db.any(config.q11, [id])
+        return result;
+    }catch(err){
+        throw err
+    }
+}
 
 
 

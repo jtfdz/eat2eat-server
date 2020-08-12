@@ -10,9 +10,9 @@ let usuario = require('./models/usuario');
 var cors = require('cors');
 var app = express();
 const config = require('./models/config');
-
 var pgSession = require('connect-pg-simple')(session)
 var pool = require('./models/pool').getPool()
+
 
 app.use(cors({
   // 'allowedHeaders': ['Content-Type','Access-Control-Allow-Origin'],
@@ -30,14 +30,13 @@ app.use(cors({
   credentials: true
 }));
 
-
 app.use(logger('dev')); //  formato_ Concise output colored by response status for development use.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
- app.enable('trust proxy'); 
+app.enable('trust proxy'); 
 
 app.use(session({
 store: new pgSession({ pool : pool, tableName: config.tabla_sesiones}),
@@ -54,21 +53,6 @@ cookie: {
  }, 
 }))
 
-
-
-
-
-// app.use(session({
-//   secret: 'fajoq0i943wki09tgd',
-//   saveUninitialized: true,
-//   resave: true,
-//   cookie: {
-//     secure: false,
-//     maxAge: 993600000
-//   }
-// }));
-
-
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(require('./models/strategy'));
@@ -84,5 +68,6 @@ passport.deserializeUser(function(serializedUser,done){
 })
 
 app.use('/', mainRouter);
+
 
 module.exports = app;
