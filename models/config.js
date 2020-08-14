@@ -23,7 +23,7 @@ const config = {
     q12: 'INSERT INTO e2e_productos(id_producto, id_establecimiento_producto, nombre_producto, tiempo_espera_producto, descripcion_producto, precio_producto) VALUES(DEFAULT, $1, $2, $3, $4, $5)',
     q13: qformat.select_pro + '  id_producto=$1',
     q14: 'UPDATE e2e_productos SET nombre_producto=$1, tiempo_espera_producto=$2, descripcion_producto=$3, precio_producto=$4  WHERE (SELECT id_establecimiento FROM e2e_establecimientos WHERE id_usuario_establecimiento=$5 AND id_establecimiento=(SELECT id_establecimiento_producto FROM e2e_productos WHERE id_producto=$6))=id_establecimiento_producto AND id_producto=$6' ,
-    q15: 'DELETE FROM e2e_productos WHERE id_producto=$1 AND (SELECT id_establecimiento from e2e_establecimientos WHERE id_usuario_establecimiento=$2 AND (SELECT id_establecimiento_producto FROM e2e_productos WHERE id_producto=$1)=id_establecimiento_producto',
+    q15: 'DELETE FROM e2e_productos WHERE id_producto=$1 AND (SELECT id_establecimiento from e2e_establecimientos WHERE id_usuario_establecimiento=$2 AND id_establecimiento=(SELECT id_establecimiento_producto FROM e2e_productos WHERE id_producto=$1))=id_establecimiento_producto',
  
 
 }
