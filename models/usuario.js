@@ -115,16 +115,42 @@ module.exports.productosMostrar = async (id) => {
 }
 
 
+module.exports.productoCrear = async (data,id) => {
+    try{
+        const result = await db.none(config.q12 , [id, data.nombre, data.tiempo, data.descripcion, data.precio])
+        return result
+    }catch(e){
+        throw e;
+    }
+}
+
+module.exports.productoMostrar = async (id) => {
+    try{
+        const result = await db.any(config.q13, [id])
+        return result;
+    }catch(err){
+        throw err
+    }
+}
 
 
+module.exports.productoEditar = async (data, id, sessionid) => {
+    try {
+        const result = await db.none(config.q14, [data.nombre, data.tiempo, data.descripcion, data.precio, sessionid, id]);
+        return result
+    }catch(e){
+        throw e;
+    }
+}
 
-
-
-
-
-
-
-
+module.exports.productoBorrar = async (id, sessionid) => {
+    try{
+        const result = await db.none(config.q15, [id, sessionid])
+        return result
+    }catch(e){
+        throw e;
+    }
+}
 
 
 

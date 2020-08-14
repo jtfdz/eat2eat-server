@@ -143,7 +143,49 @@ router.get('/productos/:id', auth.isAuth, (req, res) => {
     })
 })
 
+router.get('/producto/:id', auth.isAuth, (req, res) => {
+    user.productoMostrar(req.params.id).then((data) => {
+        let message, status;
+        if(data !== null){
+            message = "producto desplegados :).";
+            status = 200;
+        }else{
+            message = "producto NO desplegados :(.",
+            status = 404;
+        }
+        res.json({data, message, status});
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error al cargar el producto :(.'})  
+    })
+})
 
+router.post('/producto-crear/:id', auth.isAuth, (req, res) => {
+    user.productoCrear(req.body,req.params.id).then((result) => {
+        res.json({status: 200, message: 'producto creado :).'})
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error al creado el producto :(.'})  
+    })
+})
+
+router.delete('/producto/:id/borrar', auth.isAuth, (req, res) => {
+    user.productoBorrar(req.params.id, sessionHelper.getIdFromSession(req)).then((result) => {
+        res.json({status: 200, message: 'producto borrado :).'})
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error al borrar producto :(.'})
+    })
+})
+
+router.put('/producto/:id/editar', auth.isAuth, (req, res) => {
+    user.productoEditar(req.body, req.params.id, sessionHelper.getIdFromSession(req)).then((result) => {
+        res.json({status: 200, message: 'producto modificado :).'})
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error al modificar producto :(.'})
+    })
+})
 
 
 module.exports = router;

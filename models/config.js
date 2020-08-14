@@ -1,7 +1,7 @@
 const qformat = {
     select_u: 'SELECT * FROM e2e_usuarios WHERE',
     select_p: 'SELECT * FROM e2e_establecimientos WHERE',
-    select_pro: 'SELECT * FROM e2e_productos, e2e_establecimientos WHERE'
+    select_pro: 'SELECT * FROM e2e_productos WHERE',
 }
 
 
@@ -19,7 +19,12 @@ const config = {
     q8: 'DELETE FROM e2e_establecimientos WHERE id_establecimiento= $1 AND id_usuario_establecimiento= $2',
     q9:  qformat.select_p + ' id_establecimiento=$1',
     q10: 'UPDATE e2e_establecimientos SET nombre_establecimiento=$1, direccion_establecimiento=$2, descripcion_establecimiento=$3, contacto_establecimiento=$4, aceptado_establecimiento=false WHERE id_establecimiento=$5 AND id_usuario_establecimiento=$6',
-    q11: qformat.select_pro + '  id_establecimiento=$1',
+    q11: qformat.select_pro + '  id_establecimiento_producto=$1',
+    q12: 'INSERT INTO e2e_productos(id_producto, id_establecimiento_producto, nombre_producto, tiempo_espera_producto, descripcion_producto, precio_producto) VALUES(DEFAULT, $1, $2, $3, $4, $5)',
+    q13: qformat.select_pro + '  id_producto=$1',
+    q14: 'UPDATE e2e_productos SET nombre_producto=$1, tiempo_espera_producto=$2, descripcion_producto=$3, precio_producto=$4  WHERE (SELECT id_establecimiento FROM e2e_establecimientos WHERE id_usuario_establecimiento=$5 AND id_establecimiento=(SELECT id_establecimiento_producto FROM e2e_productos WHERE id_producto=$6))=id_establecimiento_producto AND id_producto=$6' ,
+    q15: 'DELETE FROM e2e_productos WHERE id_producto=$1 AND (SELECT id_establecimiento from e2e_establecimientos WHERE id_usuario_establecimiento=$2 AND (SELECT id_establecimiento_producto FROM e2e_productos WHERE id_producto=$1)=id_establecimiento_producto',
+ 
 
 }
 
