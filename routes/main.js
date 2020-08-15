@@ -35,7 +35,10 @@ router.post('/registro',
         let status, mensaje;
         if(count > 0){
             status = 200;
-            mensaje = "usuario registrado :).";
+            mensaje = "usuario registrado :)";
+            user.carritoCrear(req.body.email).then((result)=>{
+                mensaje = mensaje + ' + carrito :)'
+            })
         }else{
           status = 500;
           mensaje = 'error al registrar Usuario :(.'
@@ -187,5 +190,13 @@ router.put('/producto/:id/editar', auth.isAuth, (req, res) => {
     })
 })
 
+router.post('/carrito', auth.isAuth, (req, res) => {
+    user.carritoEditar(req.body, sessionHelper.getIdFromSession(req)).then((result) => {
+        res.json({status: 200, message: 'carrito actualizado :).'})
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error al actualizar el carrito :(.'})  
+    })
+})
 
 module.exports = router;

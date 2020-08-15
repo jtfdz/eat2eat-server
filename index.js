@@ -13,7 +13,6 @@ const config = require('./models/config');
 var pgSession = require('connect-pg-simple')(session)
 var pool = require('./models/pool').getPool()
 
-
 app.use(cors({
   // 'allowedHeaders': ['Content-Type','Access-Control-Allow-Origin'],
    origin: true,

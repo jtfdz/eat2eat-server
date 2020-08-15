@@ -70,7 +70,7 @@ module.exports.establecimientosMostrarIndividual = async (id) => {
 
 module.exports.establecimientoCrear = async (data,id) => {
     try{
-        const result = await db.none(config.q7 , [id, data.nombre,data.direccion,data.descripcion,data.contacto,data.coloreo])
+        const result = await db.none(config.q7 , [id, data.nombre,data.direccion,data.descripcion,data.contacto,data.coloreo, data.latitud, data.longitud])
         return result
     }catch(e){
         throw e;
@@ -152,8 +152,24 @@ module.exports.productoBorrar = async (id, sessionid) => {
     }
 }
 
+module.exports.carritoCrear = async (correo) => {
+    try{
+        const result = await db.none(config.q16, [correo])
+        return result
+    }catch(e){
+        throw e;
+    }
+}
 
 
+module.exports.carritoEditar = async (data, sessionid) => {
+    try{
+        const result = await db.none(config.q17, [JSON.stringify(data), sessionid])
+        return result
+    }catch(e){
+        throw e;
+    }
+}
 
 
 
