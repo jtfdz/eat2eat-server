@@ -199,4 +199,44 @@ router.post('/carrito', auth.isAuth, (req, res) => {
     })
 })
 
+router.get('/carritos-usuario', auth.isAuth, (req, res) => {
+    user.carritoMostrar(sessionHelper.getIdFromSession(req)).then((data) => {
+        let message, status;
+        if(data !== null){
+
+            var carritos = [];
+            var productosinfo = [];
+
+            for (let entry of data){ carritos.push(entry); }
+            for (let entry of carritos[0].productos_carrito){ productosinfo.push(JSON.parse(entry).producto)}
+        
+            user.productosCarritoMostrar(productosinfo,sessionHelper.getIdFromSession(req)).then((data) => {
+                let message, status;
+                if(data !== null){    
+                    message = "carritos desplegados :).";
+                    status = 200;
+                    res.json({data, message, status});
+                }else{
+                    message = "carritos NO desplegados :(.",
+                    status = 404;
+                    res.json({data, message, status});
+                }
+            }).catch(err => {
+                console.log(err)
+                res.json({status: 500, message: 'Error al cargar los carritos.'})  
+            })                
+
+
+        }else{
+            message = "carritos NO desplegados :(.",
+            status = 404;
+            res.json({data, message, status});
+        }
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'Error al cargar los carritos.'})  
+    })
+})
+
+
 module.exports = router;

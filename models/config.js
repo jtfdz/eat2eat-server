@@ -2,6 +2,9 @@ const qformat = {
     select_u: 'SELECT * FROM e2e_usuarios WHERE',
     select_p: 'SELECT * FROM e2e_establecimientos WHERE',
     select_pro: 'SELECT * FROM e2e_productos WHERE',
+    select_ca: 'SELECT * FROM e2e_carritos WHERE',
+    select_special: 'SELECT * FROM e2e_productos, e2e_carritos WHERE'
+
 }
 
 
@@ -26,6 +29,8 @@ const config = {
     q15: 'DELETE FROM e2e_productos WHERE id_producto=$1 AND (SELECT id_establecimiento from e2e_establecimientos WHERE id_usuario_establecimiento=$2 AND id_establecimiento=(SELECT id_establecimiento_producto FROM e2e_productos WHERE id_producto=$1))=id_establecimiento_producto',
     q16: 'INSERT INTO e2e_carritos(id_carrito, id_usuario_carrito) VALUES(DEFAULT, (SELECT id_usuario FROM e2e_usuarios WHERE correo_usuario=$1))',
     q17: 'UPDATE e2e_carritos SET productos_carrito=array_append(productos_carrito, $1) WHERE id_usuario_carrito=$2',
+    q18: qformat.select_ca + ' id_usuario_carrito=$1',
+    q19: qformat.select_special + ' id_producto = ANY(ARRAY[$1]) AND id_usuario_carrito=$2',
 }
 
 

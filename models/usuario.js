@@ -171,7 +171,21 @@ module.exports.carritoEditar = async (data, sessionid) => {
     }
 }
 
+module.exports.carritoMostrar = async (id) => {
+    try{
+        const result = await db.any(config.q18, [id])
+        return result;
+    }catch(err){
+        throw err
+    }
+}
 
-
-
+module.exports.productosCarritoMostrar = async (data, sessionid) => {
+    try{
+        const result = await db.any(config.q19, [data, sessionid])
+        return result;
+    }catch(err){
+        throw err
+    }
+}
 
