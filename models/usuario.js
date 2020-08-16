@@ -189,3 +189,12 @@ module.exports.productosCarritoMostrar = async (data, sessionid) => {
     }
 }
 
+module.exports.carritoBorrar = async (data, sessionid) => {
+    try{
+        const result = await db.any(config.q20, [data, sessionid])
+        return result;
+    }catch(err){
+        throw err
+    }
+}
+

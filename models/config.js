@@ -31,6 +31,8 @@ const config = {
     q17: 'UPDATE e2e_carritos SET productos_carrito=array_append(productos_carrito, $1) WHERE id_usuario_carrito=$2',
     q18: qformat.select_ca + ' id_usuario_carrito=$1',
     q19: qformat.select_special + ' id_producto = ANY(ARRAY[$1]) AND id_usuario_carrito=$2',
+    q20: 'UPDATE e2e_carritos SET productos_carrito=$1 WHERE id_usuario_carrito=$2',    
+
 }
 
 

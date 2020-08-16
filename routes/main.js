@@ -190,7 +190,7 @@ router.put('/producto/:id/editar', auth.isAuth, (req, res) => {
     })
 })
 
-router.post('/carrito', auth.isAuth, (req, res) => {
+router.put('/carrito', auth.isAuth, (req, res) => {
     user.carritoEditar(req.body, sessionHelper.getIdFromSession(req)).then((result) => {
         res.json({status: 200, message: 'carrito actualizado :).'})
     }).catch(err => {
@@ -210,6 +210,8 @@ router.get('/carritos-usuario', auth.isAuth, (req, res) => {
             for (let entry of data){ carritos.push(entry); }
             for (let entry of carritos[0].productos_carrito){ productosinfo.push(JSON.parse(entry).producto)}
         
+                console.log(productosinfo)
+
             user.productosCarritoMostrar(productosinfo,sessionHelper.getIdFromSession(req)).then((data) => {
                 let message, status;
                 if(data !== null){    
@@ -237,6 +239,16 @@ router.get('/carritos-usuario', auth.isAuth, (req, res) => {
         res.json({status: 500, message: 'Error al cargar los carritos.'})  
     })
 })
+
+router.put('/carritos-usuario/borrar', auth.isAuth, (req, res) => {
+    user.carritoBorrar(req.body, sessionHelper.getIdFromSession(req)).then((result) => {
+        res.json({status: 200, message: 'producto de carrito borrado :).'})
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error al borrar producto de carrito :(.'})
+    })
+})
+
 
 
 module.exports = router;
