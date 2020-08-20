@@ -10,7 +10,7 @@ const config = require('./config');
 
 module.exports.registrarUsuario = async (data) => {
     try{
-        const result = await db.result(config.q1, [data.username, bcrypt.hashSync(data.passwords.password, 10), data.nombre, data.email, 2] );
+        const result = await db.result(config.q1, [data.username, bcrypt.hashSync(data.passwords.password, 10), data.nombre, data.email, data.tipo] );
         return result
     }catch(err){
         throw err
@@ -198,3 +198,20 @@ module.exports.carritoBorrar = async (data, sessionid) => {
     }
 }
 
+module.exports.conductorCrear = async (data,sessionid) => {
+    try{
+        const result = await db.none(config.q21, [sessionid, data.marca, data.modelo, data.placa, data.coloreo, data.distintivos])
+        return result
+    }catch(e){
+        throw e;
+    }
+}
+
+module.exports.getTipo = async (username) => {
+    try{
+        const data = await db.oneOrNone(config.q22, [username]);
+        return data;
+    }catch(err){
+        throw err
+    }
+}

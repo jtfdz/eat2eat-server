@@ -11,7 +11,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/login', auth.isLogged, passport.authenticate('local'), function(req, res){
-    res.json({mensaje: "logged in con éxito.", status: 200})
+
+    user.getTipo(req.body.username).then((data) => {
+        let message, status;
+        if(data !== null){
+            res.json({mensaje: "logged in con éxito.", status: 200, tipo: data})
+        }else{
+            res.json({mensaje: "logged in SIN éxito.", status: 400})
+        }
+    }).catch(err => {
+        console.log(err)
+        res.json({status: 500, message: 'error en login :(.'})  
+    })
+
 });
 
 router.get('/logout', auth.isAuth, function(req, res){
@@ -202,15 +214,15 @@ router.put('/carrito', auth.isAuth, (req, res) => {
 router.get('/carritos-usuario', auth.isAuth, (req, res) => {
     user.carritoMostrar(sessionHelper.getIdFromSession(req)).then((data) => {
         let message, status;
-        if(data !== null){
+        if(data[0].productos_carrito.length > 0){
 
             var carritos = [];
             var productosinfo = [];
 
             for (let entry of data){ carritos.push(entry); }
             for (let entry of carritos[0].productos_carrito){ productosinfo.push(JSON.parse(entry).producto)}
-        
-                console.log(productosinfo)
+
+            
 
             user.productosCarritoMostrar(productosinfo,sessionHelper.getIdFromSession(req)).then((data) => {
                 let message, status;
@@ -230,9 +242,9 @@ router.get('/carritos-usuario', auth.isAuth, (req, res) => {
 
 
         }else{
-            message = "carritos NO desplegados :(.",
+            message = "carrito vacío :(.",
             status = 404;
-            res.json({data, message, status});
+            res.json({message, status});
         }
     }).catch(err => {
         console.log(err)
@@ -247,6 +259,39 @@ router.put('/carritos-usuario/borrar', auth.isAuth, (req, res) => {
         console.log(err)
         res.json({status: 500, message: 'error al borrar producto de carrito :(.'})
     })
+})
+
+router.post('/registro-conductor',  
+    check('email').custom(value => { return user.checkingEmail(value).then(user =>{if(user){ return Promise.reject('Correo en existencia.'); } } )}),
+    check('username').custom(value => { return user.getUserByUsername(value).then(user =>{if(user){ return Promise.reject('Nombre de usuario en existencia. Intente con uno diferente.'); } } )}),
+    auth.isLogged, function(req, res){
+
+    const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array()  })
+      }
+
+
+    user.registrarUsuario(req.body).then((result)=>{
+        let count = result.rowCount;
+        let status, mensaje;
+        if(count > 0){
+            status = 200;
+            mensaje = "usuario registrado :)";
+            user.getUserByUsername(req.body.username).then((data)=>{
+                user.conductorCrear(req.body, data.id_usuario).then((result)=>{
+                    mensaje = mensaje + ' como conductor :)'
+                })
+            })
+        }else{
+          status = 500;
+          mensaje = 'error al registrar Usuario :(.'
+          }
+      res.json({status, mensaje})
+      }).catch(err => {
+        console.log(err);
+        res.status(500).json({status: 500, mensaje: 'error al Registrar :(.'});
+        }) 
 })
 
 
